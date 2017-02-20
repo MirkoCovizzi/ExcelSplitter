@@ -19,30 +19,30 @@ import java.util.ResourceBundle;
 public class ModeController extends ExcelController implements Initializable{
 
     public void handleSimpleButton(ActionEvent actionEvent) {
-        transition(actionEvent, "split.fxml");
+        transition(actionEvent, "../fxml/split.fxml");
     }
 
     public void handleAdvancedButton(ActionEvent actionEvent) {
-        transition(actionEvent, "advanced_split.fxml");
+        transition(actionEvent, "../fxml/advanced_split.fxml");
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.setPreviousFxml("load.fxml");
+        this.setPreviousFxml("../fxml/load.fxml");
     }
 
     public void handleHelpButton(ActionEvent actionEvent) {
         final Stage dialog = new Stage();
         dialog.setTitle("Info");
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("help.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/help.fxml"));
         try {
             Parent root = fxmlLoader.load();
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.initOwner((Stage) ((Node)actionEvent.getSource()).getScene().getWindow());
-            dialog.getIcons().add(new Image(Main.class.getResourceAsStream("excel-splitter-small.png")));
+            dialog.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
             dialog.setResizable(false);
             Scene dialogScene = new Scene(root);
-            dialogScene.getStylesheets().add("theme.css");
+            dialogScene.getStylesheets().add("res/theme.css");
             dialog.setScene(dialogScene);
             Label label = (Label)root.lookup("#label");
             label.setText("Modalità Semplice: Effettua uno split su di una colonna, senza creazione di cartelle o sottocartelle.\n" +

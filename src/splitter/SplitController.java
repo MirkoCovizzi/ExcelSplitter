@@ -10,7 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -41,16 +40,6 @@ public class SplitController extends ExcelController implements Initializable{
 
 
     public void handleChoiceBox(ActionEvent actionEvent) {
-        /*
-        ComboBox comboBox2 = new ComboBox();
-        comboBox2.getItems().add("");
-        for(int i = 0; i < this.getSpreadsheet().getColumns().size(); i++){
-            indexedString = new IndexedString(i, this.getSpreadsheet().getColumns().get(i));
-            comboBox2.getItems().add(indexedString);
-        }
-        comboBox2.setOnAction(e -> handleComboBox(new ActionEvent()));
-        vBox.getChildren().add(comboBox2);
-        */
         this.forwardButton.setDisable(false);
     }
 
@@ -59,22 +48,22 @@ public class SplitController extends ExcelController implements Initializable{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
         try {
             Parent root = fxmlLoader.load();
-            if (fxml.equals("export.fxml")) {
+            if (fxml.equals("../fxml/export.fxml")) {
                 ExportController controller = fxmlLoader.getController();
                 controller.setSpreadsheet(this.getSpreadsheet());
                 controller.setIndexedString((IndexedString) columnBox.getValue());
-                controller.setPreviousFxml("split.fxml");
-            } else if (fxml.equals("mode.fxml")) {
+                controller.setPreviousFxml("../fxml/split.fxml");
+            } else if (fxml.equals("../fxml/mode.fxml")) {
                 ModeController controller = fxmlLoader.getController();
                 controller.setSpreadsheet(this.getSpreadsheet());
             }
             Stage st_old =(Stage) ((Node)event.getSource()).getScene().getWindow();
             Stage st_new = new Stage();
             st_new.setResizable(false);
-            st_new.getIcons().add(new Image(Main.class.getResourceAsStream("excel-splitter-small.png")));
+            st_new.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
             st_new.setTitle("Excel Splitter");
             Scene scene = new Scene(root);
-            scene.getStylesheets().add("theme.css");
+            scene.getStylesheets().add("res/theme.css");
             st_new.setScene(scene);
             st_old.close();
             st_new.show();
@@ -86,7 +75,7 @@ public class SplitController extends ExcelController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.forwardButton.setDisable(true);
-        this.setPreviousFxml("mode.fxml");
-        this.setNextFxml("export.fxml");
+        this.setPreviousFxml("../fxml/mode.fxml");
+        this.setNextFxml("../fxml/export.fxml");
     }
 }

@@ -10,7 +10,7 @@
    <children>
       <ImageView pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="/splitter/warning-icon.png" />
+            <Image url="/res/warning-icon.png" />
          </image>
       </ImageView>
       <Label id="label" text="" wrapText="true" />

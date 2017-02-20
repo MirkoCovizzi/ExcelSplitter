@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.DataFormat;
@@ -39,7 +38,7 @@ public class LoadController extends ExcelController {
         if (file != null) {
             try {
                 this.setSpreadsheet(new Spreadsheet(file));
-                transition(actionEvent, "mode.fxml");
+                transition(actionEvent, "../fxml/mode.fxml");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -69,22 +68,22 @@ public class LoadController extends ExcelController {
                 Timeline timeline = new Timeline();
                 timeline.getKeyFrames().add(new KeyFrame(Duration.millis(1),
                         event_t -> {
-                            transition(event, "mode.fxml");
+                            transition(event, "../fxml/mode.fxml");
                         }));
                 timeline.play();
             } catch (IOException e) {
                 System.out.println("The file is not a proper .xls file.");
                 final Stage dialog = new Stage();
                 dialog.setTitle("Attenzione!");
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("dialog.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/dialog.fxml"));
                 try {
                     Parent root = fxmlLoader.load();
                     dialog.initModality(Modality.APPLICATION_MODAL);
                     dialog.initOwner((Stage) ((Node)event.getSource()).getScene().getWindow());
-                    dialog.getIcons().add(new Image(Main.class.getResourceAsStream("excel-splitter-small.png")));
+                    dialog.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
                     dialog.setResizable(false);
                     Scene dialogScene = new Scene(root);
-                    dialogScene.getStylesheets().add("theme.css");
+                    dialogScene.getStylesheets().add("res/theme.css");
                     dialog.setScene(dialogScene);
                     Label label = (Label)root.lookup("#label");
                     label.setText("Il file deve essere un documento Excel (.xls) valido!");

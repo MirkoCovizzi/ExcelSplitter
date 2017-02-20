@@ -1,15 +1,8 @@
 package splitter;
 
 import javafx.application.Platform;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,22 +14,16 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.*;
 import javafx.stage.Window;
 
 import java.awt.*;
 import java.io.File;
-import java.io.FilePermission;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.AccessControlException;
-import java.security.AccessController;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -91,9 +78,9 @@ public class ExportController extends ExcelController implements Initializable{
             if (checkBox.isSelected()){
                 path += File.separator + "Excel Splitter";
             }
-            if (this.getPreviousFxml().equals("advanced_split.fxml")){
+            if (this.getPreviousFxml().equals("../fxml/advanced_split.fxml")){
                 spreadsheetList  = Spreadsheet.split(this.getSpreadsheet(), directory.getIndex(), subdirectory.getIndex(), indexedString.getIndex());
-            } else if (this.getPreviousFxml().equals("split.fxml")) {
+            } else if (this.getPreviousFxml().equals("../fxml/split.fxml")) {
                 spreadsheetList = Spreadsheet.split(this.getSpreadsheet(), -1, -1, indexedString.getIndex());
             }
             List<Spreadsheet> finalSpreadsheetList = spreadsheetList;
@@ -137,7 +124,7 @@ public class ExportController extends ExcelController implements Initializable{
 
             };
             task.setOnSucceeded(e -> {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("finish.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/finish.fxml"));
                 try {
                     Parent root = fxmlLoader.load();
                     FinishController controller = fxmlLoader.getController();
@@ -145,11 +132,11 @@ public class ExportController extends ExcelController implements Initializable{
                     Stage st_old =(Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
                     Stage st_new = new Stage();
                     st_new.setResizable(false);
-                    st_new.getIcons().add(new Image(Main.class.getResourceAsStream("excel-splitter-small.png")));
+                    st_new.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
                     st_new.setTitle("Excel Splitter");
                     st_old.close();
                     Scene scene = new Scene(root);
-                    scene.getStylesheets().add("theme.css");
+                    scene.getStylesheets().add("res/theme.css");
                     st_new.setScene(scene);
                     st_new.show();
                 } catch (IOException ex) {
@@ -161,15 +148,15 @@ public class ExportController extends ExcelController implements Initializable{
         } else {
             final Stage dialog = new Stage();
             dialog.setTitle("Attenzione!");
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("dialog.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/dialog.fxml"));
             try {
                 Parent root = fxmlLoader.load();
                 dialog.initModality(Modality.APPLICATION_MODAL);
                 dialog.initOwner((Stage) ((Node)actionEvent.getSource()).getScene().getWindow());
-                dialog.getIcons().add(new Image(Main.class.getResourceAsStream("excel-splitter-small.png")));
+                dialog.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
                 dialog.setResizable(false);
                 Scene dialogScene = new Scene(root);
-                dialogScene.getStylesheets().add("theme.css");
+                dialogScene.getStylesheets().add("res/theme.css");
                 dialog.setScene(dialogScene);
                 Label label = (Label)root.lookup("#label");
                 label.setText("Non ho i permessi per esportare in questa cartella!");
@@ -236,7 +223,7 @@ public class ExportController extends ExcelController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.setNextFxml("finish.fxml");
+        this.setNextFxml("../fxml/finish.fxml");
         this.progressBar.setVisible(false);
     }
 

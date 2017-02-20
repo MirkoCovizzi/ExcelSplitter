@@ -34,10 +34,10 @@ public class ExcelController {
             Stage st_old =(Stage) ((Node)event.getSource()).getScene().getWindow();
             Stage st_new = new Stage();
             st_new.setResizable(false);
-            st_new.getIcons().add(new Image(Main.class.getResourceAsStream("excel-splitter-small.png")));
+            st_new.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
             st_new.setTitle("Excel Splitter");
             Scene scene = new Scene(root);
-            scene.getStylesheets().add("theme.css");
+            scene.getStylesheets().add("res/theme.css");
             st_new.setScene(scene);
             st_old.close();
             st_new.show();
