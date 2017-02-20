@@ -11,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.Image;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -22,8 +21,6 @@ import java.util.ResourceBundle;
 
 public class AdvancedSplitController extends ExcelController implements Initializable{
     @FXML
-    private VBox vBox;
-    @FXML
     private ChoiceBox directoryBox;
     @FXML
     private ChoiceBox subdirectoryBox;
@@ -32,8 +29,7 @@ public class AdvancedSplitController extends ExcelController implements Initiali
     @FXML
     private Button forwardButton;
 
-    private IndexedString indexedString;
-    private List<IndexedString> indexedStringList = new ArrayList<IndexedString>();
+    private List<IndexedString> indexedStringList = new ArrayList<>();
     private boolean selectedDirectory = false;
     private boolean selectedSubdirectory = false;
     private boolean selectedColumn = false;
@@ -41,6 +37,7 @@ public class AdvancedSplitController extends ExcelController implements Initiali
     @Override
     public void setSpreadsheet(Spreadsheet spreadsheet) {
         super.setSpreadsheet(spreadsheet);
+        IndexedString indexedString;
 
         for(int i = 0; i < spreadsheet.getColumns().size(); i++){
             indexedString = new IndexedString(i, spreadsheet.getColumns().get(i));

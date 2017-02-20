@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ExportController extends ExcelController implements Initializable{
-
     @FXML
     private Button backButton;
     @FXML
@@ -152,7 +151,7 @@ public class ExportController extends ExcelController implements Initializable{
             try {
                 Parent root = fxmlLoader.load();
                 dialog.initModality(Modality.APPLICATION_MODAL);
-                dialog.initOwner((Stage) ((Node)actionEvent.getSource()).getScene().getWindow());
+                dialog.initOwner(((Node)actionEvent.getSource()).getScene().getWindow());
                 dialog.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
                 dialog.setResizable(false);
                 Scene dialogScene = new Scene(root);
@@ -227,16 +226,8 @@ public class ExportController extends ExcelController implements Initializable{
         this.progressBar.setVisible(false);
     }
 
-    public IndexedString getDirectory() {
-        return directory;
-    }
-
     public void setDirectory(IndexedString directory) {
         this.directory = directory;
-    }
-
-    public IndexedString getSubdirectory() {
-        return subdirectory;
     }
 
     public void setSubdirectory(IndexedString subdirectory) {

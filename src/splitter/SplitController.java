@@ -11,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.Image;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,17 +19,14 @@ import java.util.ResourceBundle;
 
 public class SplitController extends ExcelController implements Initializable{
     @FXML
-    private VBox vBox;
-    @FXML
     private ChoiceBox columnBox;
     @FXML
     private Button forwardButton;
 
-    private IndexedString indexedString;
-
     @Override
     public void setSpreadsheet(Spreadsheet spreadsheet) {
         super.setSpreadsheet(spreadsheet);
+        IndexedString indexedString;
 
         for(int i = 0; i < spreadsheet.getColumns().size(); i++){
             indexedString = new IndexedString(i, spreadsheet.getColumns().get(i));

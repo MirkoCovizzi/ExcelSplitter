@@ -38,7 +38,7 @@ public class ModeController extends ExcelController implements Initializable{
         try {
             Parent root = fxmlLoader.load();
             dialog.initModality(Modality.APPLICATION_MODAL);
-            dialog.initOwner((Stage) ((Node)actionEvent.getSource()).getScene().getWindow());
+            dialog.initOwner(((Node)actionEvent.getSource()).getScene().getWindow());
             dialog.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
             dialog.setResizable(false);
             Scene dialogScene = new Scene(root);

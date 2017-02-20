@@ -66,10 +66,7 @@ public class LoadController extends ExcelController {
             try {
                 this.setSpreadsheet(new Spreadsheet(file));
                 Timeline timeline = new Timeline();
-                timeline.getKeyFrames().add(new KeyFrame(Duration.millis(1),
-                        event_t -> {
-                            transition(event, "../fxml/mode.fxml");
-                        }));
+                timeline.getKeyFrames().add(new KeyFrame(Duration.millis(1), event_t -> transition(event, "../fxml/mode.fxml")));
                 timeline.play();
             } catch (IOException e) {
                 System.out.println("The file is not a proper .xls file.");
@@ -79,7 +76,7 @@ public class LoadController extends ExcelController {
                 try {
                     Parent root = fxmlLoader.load();
                     dialog.initModality(Modality.APPLICATION_MODAL);
-                    dialog.initOwner((Stage) ((Node)event.getSource()).getScene().getWindow());
+                    dialog.initOwner(((Node)event.getSource()).getScene().getWindow());
                     dialog.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
                     dialog.setResizable(false);
                     Scene dialogScene = new Scene(root);
