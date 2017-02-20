@@ -1,0 +1,21 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ExcelSplitter:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ExcelSplitter_jar</output-path>
+    <root id="archive" name="ExcelSplitter.jar">
+      <element id="module-output" name="ExcelSplitter" />
+      <element id="extracted-dir" path="E:/UniFe/Tesi/poi-3.16-beta1/poi-3.16-beta1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/UniFe/Tesi/poi-3.16-beta1/poi-ooxml-3.16-beta1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/UniFe/Tesi/poi-3.16-beta1/poi-examples-3.16-beta1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/UniFe/Tesi/poi-3.16-beta1/poi-excelant-3.16-beta1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/UniFe/Tesi/poi-3.16-beta1/poi-scratchpad-3.16-beta1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/UniFe/Tesi/poi-3.16-beta1/poi-ooxml-schemas-3.16-beta1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/UniFe/Tesi/commons-lang3-3.5/commons-lang3-3.5.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/UniFe/Tesi/commons-lang3-3.5/commons-lang3-3.5-tests.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/UniFe/Tesi/commons-lang3-3.5/commons-lang3-3.5-javadoc.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/UniFe/Tesi/commons-lang3-3.5/commons-lang3-3.5-sources.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/UniFe/Tesi/commons-lang3-3.5/commons-lang3-3.5-test-sources.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/UniFe/Tesi/commons-io-2.5/commons-io-2.5.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/UniFe/Tesi/commons-io-2.5/commons-io-2.5-javadoc.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
