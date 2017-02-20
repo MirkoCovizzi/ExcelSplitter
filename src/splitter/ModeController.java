@@ -42,7 +42,7 @@ public class ModeController extends ExcelController implements Initializable{
             dialog.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
             dialog.setResizable(false);
             Scene dialogScene = new Scene(root);
-            dialogScene.getStylesheets().add("res/theme.css");
+            dialogScene.getStylesheets().add("css/theme.css");
             dialog.setScene(dialogScene);
             Label label = (Label)root.lookup("#label");
             label.setText("Modalità Semplice: Effettua uno split su di una colonna, senza creazione di cartelle o sottocartelle.\n" +

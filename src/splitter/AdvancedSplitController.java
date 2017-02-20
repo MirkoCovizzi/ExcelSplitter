@@ -77,7 +77,7 @@ public class AdvancedSplitController extends ExcelController implements Initiali
             st_new.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
             st_new.setTitle("Excel Splitter");
             Scene scene = new Scene(root);
-            scene.getStylesheets().add("res/theme.css");
+            scene.getStylesheets().add("css/theme.css");
             st_new.setScene(scene);
             st_old.close();
             st_new.show();

@@ -16,7 +16,7 @@ public class Main extends Application {
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
         primaryStage.setTitle("Excel Splitter");
         Scene scene = new Scene(root);
-        scene.getStylesheets().add("res/theme.css");
+        scene.getStylesheets().add("css/theme.css");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

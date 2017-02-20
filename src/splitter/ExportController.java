@@ -136,7 +136,7 @@ public class ExportController extends ExcelController implements Initializable{
                     st_new.setTitle("Excel Splitter");
                     st_old.close();
                     Scene scene = new Scene(root);
-                    scene.getStylesheets().add("res/theme.css");
+                    scene.getStylesheets().add("css/theme.css");
                     st_new.setScene(scene);
                     st_new.show();
                 } catch (IOException ex) {
@@ -156,7 +156,7 @@ public class ExportController extends ExcelController implements Initializable{
                 dialog.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
                 dialog.setResizable(false);
                 Scene dialogScene = new Scene(root);
-                dialogScene.getStylesheets().add("res/theme.css");
+                dialogScene.getStylesheets().add("css/theme.css");
                 dialog.setScene(dialogScene);
                 Label label = (Label)root.lookup("#label");
                 label.setText("Non ho i permessi per esportare in questa cartella!");
