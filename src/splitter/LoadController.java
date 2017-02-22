@@ -18,7 +18,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Duration;
-
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,10 +30,13 @@ public class LoadController extends ExcelController {
     public void handleOpenButtonClick(ActionEvent actionEvent) {
         Node source = (Node) actionEvent.getSource();
         Window stage = source.getScene().getWindow();
+
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("File Excel (*.xls)", "*.xls");
         fileChooser.getExtensionFilters().add(extensionFilter);
+
         File file = fileChooser.showOpenDialog(stage);
+
         if (file != null) {
             try {
                 this.setSpreadsheet(new Spreadsheet(file));
@@ -43,7 +45,7 @@ public class LoadController extends ExcelController {
                 e.printStackTrace();
             } catch (IOException e) {
                 System.out.println("The file is not a proper .xls file.");
-                e.printStackTrace();
+                errorDialog(((Node)actionEvent.getSource()).getScene().getWindow());
             }
         }
     }
@@ -63,6 +65,8 @@ public class LoadController extends ExcelController {
         boolean success = false;
         if (files != null) {
             File file = files.get(0);
+
+            //Timeline for transitioning to next window after UI thread is finished loading the file
             try {
                 this.setSpreadsheet(new Spreadsheet(file));
                 Timeline timeline = new Timeline();
@@ -70,31 +74,35 @@ public class LoadController extends ExcelController {
                 timeline.play();
             } catch (IOException e) {
                 System.out.println("The file is not a proper .xls file.");
-                final Stage dialog = new Stage();
-                dialog.setTitle("Attenzione!");
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/dialog.fxml"));
-                try {
-                    Parent root = fxmlLoader.load();
-                    dialog.initModality(Modality.APPLICATION_MODAL);
-                    dialog.initOwner(((Node)event.getSource()).getScene().getWindow());
-                    dialog.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
-                    dialog.setResizable(false);
-                    Scene dialogScene = new Scene(root);
-                    dialogScene.getStylesheets().add("css/theme.css");
-                    dialog.setScene(dialogScene);
-                    Label label = (Label)root.lookup("#label");
-                    label.setText("Il file deve essere un documento Excel (.xls) valido!");
-                    dialog.show();
-                    Toolkit.getDefaultToolkit().beep();
-                } catch (IOException ioE) {
-                    ioE.printStackTrace();
-                }
+                errorDialog(((Node)event.getSource()).getScene().getWindow());
             }
             success = true;
         }
         event.setDropCompleted(success);
 
         event.consume();
+    }
+
+    private void errorDialog(Window initOwner){
+        final Stage dialog = new Stage();
+        dialog.setTitle("Attenzione!");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/dialog.fxml"));
+        try {
+            Parent root = fxmlLoader.load();
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.initOwner(initOwner);
+            dialog.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
+            dialog.setResizable(false);
+            Scene dialogScene = new Scene(root);
+            dialogScene.getStylesheets().add("css/theme.css");
+            dialog.setScene(dialogScene);
+            Label label = (Label)root.lookup("#label");
+            label.setText("Il file deve essere un documento Excel (.xls) valido!");
+            dialog.show();
+            Toolkit.getDefaultToolkit().beep();
+        } catch (IOException ioE) {
+            ioE.printStackTrace();
+        }
     }
 
 }
