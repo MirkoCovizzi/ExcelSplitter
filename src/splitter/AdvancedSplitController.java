@@ -30,9 +30,6 @@ public class AdvancedSplitController extends ExcelController implements Initiali
     private Button forwardButton;
 
     private List<IndexedString> indexedStringList = new ArrayList<>();
-    private boolean selectedDirectory = false;
-    private boolean selectedSubdirectory = false;
-    private boolean selectedColumn = false;
 
     @Override
     public void setSpreadsheet(Spreadsheet spreadsheet) {
@@ -45,6 +42,7 @@ public class AdvancedSplitController extends ExcelController implements Initiali
         }
         resetChoiceBox(directoryBox);
         resetChoiceBox(subdirectoryBox);
+        subdirectoryBox.getItems().add(0, null);
         resetChoiceBox(columnBox);
     }
 
@@ -91,6 +89,7 @@ public class AdvancedSplitController extends ExcelController implements Initiali
         directoryBox.valueProperty().addListener((ov, t, t1) -> {
             subdirectoryBox.getItems().remove(t1);
             columnBox.getItems().remove(t1);
+            checkForwardButton();
             if (t != null) {
                 subdirectoryBox.getItems().add(((IndexedString) t).getIndex(), t);
                 columnBox.getItems().add(((IndexedString) t).getIndex(), t);
@@ -99,6 +98,7 @@ public class AdvancedSplitController extends ExcelController implements Initiali
         subdirectoryBox.valueProperty().addListener((ov, t, t1) -> {
             directoryBox.getItems().remove(t1);
             columnBox.getItems().remove(t1);
+            checkForwardButton();
             if (t != null) {
                 directoryBox.getItems().add(((IndexedString)t).getIndex(), t);
                 columnBox.getItems().add(((IndexedString) t).getIndex(), t);
@@ -113,17 +113,19 @@ public class AdvancedSplitController extends ExcelController implements Initiali
     }
 
     public void handleDirectoryBox(ActionEvent actionEvent) {
-        this.selectedDirectory = true;
-        if((this.selectedDirectory && this.selectedSubdirectory && this.selectedColumn) || (this.selectedDirectory && this.selectedColumn)) this.forwardButton.setDisable(false);
+        checkForwardButton();
     }
 
     public void handleSubdirectoryBox(ActionEvent actionEvent) {
-        this.selectedSubdirectory = true;
-        if((this.selectedDirectory && this.selectedSubdirectory && this.selectedColumn) || (this.selectedDirectory && this.selectedColumn)) this.forwardButton.setDisable(false);
+        checkForwardButton();
     }
 
     public void handleColumnBox(ActionEvent actionEvent) {
-        this.selectedColumn = true;
-        if((this.selectedDirectory && this.selectedSubdirectory && this.selectedColumn) || (this.selectedDirectory && this.selectedColumn)) this.forwardButton.setDisable(false);
+        checkForwardButton();
+    }
+
+    private void checkForwardButton(){
+        if((!directoryBox.getSelectionModel().isEmpty() && !subdirectoryBox.getSelectionModel().isEmpty() && !columnBox.getSelectionModel().isEmpty()) || (!directoryBox.getSelectionModel().isEmpty() && !columnBox.getSelectionModel().isEmpty())) this.forwardButton.setDisable(false);
+        else this.forwardButton.setDisable(true);
     }
 }

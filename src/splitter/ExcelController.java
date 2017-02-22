@@ -25,6 +25,7 @@ public class ExcelController {
         this.spreadsheet = spreadsheet;
     }
 
+    //Method for transitioning from a window to another, sending a spreadsheet file
     public void transition(Event event, String fxml){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
         try {
