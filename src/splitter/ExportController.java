@@ -14,6 +14,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
 import javafx.stage.*;
 import javafx.stage.Window;
 
@@ -28,6 +29,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ExportController extends ExcelController implements Initializable{
+    @FXML
+    private VBox vBox;
     @FXML
     private Button backButton;
     @FXML
@@ -66,6 +69,8 @@ public class ExportController extends ExcelController implements Initializable{
         File f = new File(dir);
         Path p = f.toPath();
         if (Files.isWritable(p)) {
+            Label label = new Label("Attendere prego...");
+            vBox.getChildren().add(label);
             this.progressBar.setVisible(true);
             checkBox.setDisable(true);
             backButton.setDisable(true);
@@ -112,7 +117,7 @@ public class ExportController extends ExcelController implements Initializable{
 
                         String fullFilePath = finalPath + File.separator + dirString + File.separator + subdirString + File.separator + name;
 
-                        recursiveCheckedExport(finalSpreadsheetList.get(i), fullFilePath, 0);
+                        recursiveCheckedExport(actionEvent, finalSpreadsheetList.get(i), fullFilePath, 0);
 
                         updateProgress(i + 1, finalSpreadsheetList.size());
                         //Thread.sleep(100);
@@ -145,25 +150,7 @@ public class ExportController extends ExcelController implements Initializable{
             progressBar.progressProperty().bind(task.progressProperty());
             new Thread(task).start();
         } else {
-            final Stage dialog = new Stage();
-            dialog.setTitle("Attenzione!");
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/dialog.fxml"));
-            try {
-                Parent root = fxmlLoader.load();
-                dialog.initModality(Modality.APPLICATION_MODAL);
-                dialog.initOwner(((Node)actionEvent.getSource()).getScene().getWindow());
-                dialog.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
-                dialog.setResizable(false);
-                Scene dialogScene = new Scene(root);
-                dialogScene.getStylesheets().add("css/theme.css");
-                dialog.setScene(dialogScene);
-                Label label = (Label)root.lookup("#label");
-                label.setText("Non ho i permessi per esportare in questa cartella!");
-                dialog.show();
-                Toolkit.getDefaultToolkit().beep();
-            } catch (IOException ioE) {
-                ioE.printStackTrace();
-            }
+            errorDialog(((Node)actionEvent.getSource()).getScene().getWindow(), "Non ho i permessi per esportare in questa cartella!");
         }
     }
 
@@ -186,7 +173,7 @@ public class ExportController extends ExcelController implements Initializable{
         return name;
     }
 
-    private void recursiveCheckedExport(Spreadsheet s, String path, int count){
+    private void recursiveCheckedExport(ActionEvent actionEvent, Spreadsheet s, String path, int count){
         Path p;
         if (count == 0) {
             p = Paths.get(path + ".xls");
@@ -197,12 +184,22 @@ public class ExportController extends ExcelController implements Initializable{
         boolean notExists = Files.notExists(p);
 
         if (exists) {
-            recursiveCheckedExport(s, path, ++count);
+            recursiveCheckedExport(actionEvent, s, path, ++count);
         } else if (notExists) {
             if (count == 0){
-                s.export(path);
+                try {
+                    s.export(path);
+                } catch (IOException e) {
+                    errorDialog(((Node)actionEvent.getSource()).getScene().getWindow(), "Errore: impossibile esportare il file " + s.getName() + ".xls");
+                    e.printStackTrace();
+                }
             } else {
-                s.export(path + count);
+                try {
+                    s.export(path + count);
+                } catch (IOException e) {
+                    errorDialog(((Node)actionEvent.getSource()).getScene().getWindow(), "Errore: impossibile esportare il file " + s.getName() + ".xls");
+                    e.printStackTrace();
+                }
             }
         } else {
             System.out.println("File's status is unknown!");

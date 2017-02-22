@@ -11,7 +11,7 @@
 
 <BorderPane prefHeight="200.0" prefWidth="500.0" styleClass="card" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="splitter.ExportController">
    <center>
-      <VBox alignment="TOP_CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="vBox" alignment="TOP_CENTER" spacing="10.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>

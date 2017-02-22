@@ -7,9 +7,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
+import java.awt.*;
 import java.io.IOException;
 
 public class ExcelController {
@@ -73,5 +78,29 @@ public class ExcelController {
 
     public void handleCancelButton() {
         Platform.exit();
+    }
+
+    public void errorDialog(Window initOwner, String string){
+        final Stage dialog = new Stage();
+        dialog.setTitle("Attenzione!");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/dialog.fxml"));
+        try {
+            Parent root = fxmlLoader.load();
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.initOwner(initOwner);
+            dialog.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
+            dialog.setResizable(false);
+            Scene dialogScene = new Scene(root);
+            dialogScene.getStylesheets().add("css/theme.css");
+            dialog.setScene(dialogScene);
+            Label label = (Label)root.lookup("#label");
+            label.setText(string);
+            Button button = (Button)root.lookup("#button");
+            button.setOnAction(event -> dialog.close());
+            dialog.show();
+            Toolkit.getDefaultToolkit().beep();
+        } catch (IOException ioE) {
+            ioE.printStackTrace();
+        }
     }
 }

@@ -46,7 +46,7 @@ public class LoadController extends ExcelController {
                 e.printStackTrace();
             } catch (IOException e) {
                 System.out.println("The file is not a proper .xls file.");
-                errorDialog(((Node)actionEvent.getSource()).getScene().getWindow());
+                errorDialog(((Node)actionEvent.getSource()).getScene().getWindow(), "Il file deve essere un documento Excel (.xls) valido!");
             }
         }
     }
@@ -75,35 +75,13 @@ public class LoadController extends ExcelController {
                 timeline.play();
             } catch (IOException e) {
                 System.out.println("The file is not a proper .xls file.");
-                errorDialog(((Node)event.getSource()).getScene().getWindow());
+                errorDialog(((Node)event.getSource()).getScene().getWindow(), "Il file deve essere un documento Excel (.xls) valido!");
             }
             success = true;
         }
         event.setDropCompleted(success);
 
         event.consume();
-    }
-
-    private void errorDialog(Window initOwner){
-        final Stage dialog = new Stage();
-        dialog.setTitle("Attenzione!");
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/dialog.fxml"));
-        try {
-            Parent root = fxmlLoader.load();
-            dialog.initModality(Modality.APPLICATION_MODAL);
-            dialog.initOwner(initOwner);
-            dialog.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
-            dialog.setResizable(false);
-            Scene dialogScene = new Scene(root);
-            dialogScene.getStylesheets().add("css/theme.css");
-            dialog.setScene(dialogScene);
-            Label label = (Label)root.lookup("#label");
-            label.setText("Il file deve essere un documento Excel (.xls) valido!");
-            dialog.show();
-            Toolkit.getDefaultToolkit().beep();
-        } catch (IOException ioE) {
-            ioE.printStackTrace();
-        }
     }
 
 }

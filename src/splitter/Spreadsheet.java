@@ -13,6 +13,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+//This class is the core of the application: it loads, splits and exports .xls files.
 public class Spreadsheet {
     private HSSFSheet sheet;
     private String name;
@@ -44,7 +45,6 @@ public class Spreadsheet {
         this.subdirectory = subdirectory;
     }
 
-    //filename is the name of the Excel file to open
     public Spreadsheet(File file) throws IOException {
         FileInputStream f = new FileInputStream(file);
         NPOIFSFileSystem fs = new NPOIFSFileSystem(f);
@@ -71,16 +71,12 @@ public class Spreadsheet {
         return this.name;
     }
 
-    public void setName(String name){
-        this.name = name;
-    }
-
     public String getDirectory(){
         return this.directory;
     }
 
-    public void setDirectory(String directory){
-        this.directory = directory;
+    public String getSubdirectory() {
+        return subdirectory;
     }
 
     public List<String> getColumns(){
@@ -162,22 +158,10 @@ public class Spreadsheet {
         return spreadsheets;
     }
 
-    public void export(String filename){
+    public void export(String filename) throws IOException{
         HSSFWorkbook workbook = this.sheet.getWorkbook();
-        try {
-            workbook.write(new FileOutputStream(filename + ".xls"));
-            workbook.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public String getSubdirectory() {
-        return subdirectory;
-    }
-
-    public void setSubdirectory(String subdirectory) {
-        this.subdirectory = subdirectory;
+        workbook.write(new FileOutputStream(filename + ".xls"));
+        workbook.close();
     }
 }
 
