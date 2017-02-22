@@ -1,25 +1,18 @@
 package splitter;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
+import javafx.scene.control.Button;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import javafx.stage.Window;
-import javafx.util.Duration;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -27,6 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LoadController extends ExcelController {
+    @FXML
+    private Button openButton;
+    @FXML
+    private ProgressIndicator progressIndicator;
 
     public void handleOpenButtonClick(ActionEvent actionEvent) {
         Node source = (Node) actionEvent.getSource();
@@ -43,9 +40,8 @@ public class LoadController extends ExcelController {
                 this.setSpreadsheet(new Spreadsheet(file));
                 transition(actionEvent, "../fxml/mode.fxml");
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                errorDialog(((Node)actionEvent.getSource()).getScene().getWindow(), "Errore di apertura file.");
             } catch (IOException e) {
-                System.out.println("The file is not a proper .xls file.");
                 errorDialog(((Node)actionEvent.getSource()).getScene().getWindow(), "Il file deve essere un documento Excel (.xls) valido!");
             }
         }
@@ -67,16 +63,27 @@ public class LoadController extends ExcelController {
         if (files != null) {
             File file = files.get(0);
 
-            //Timeline for transitioning to next window after UI thread is finished loading the file
-            try {
-                this.setSpreadsheet(new Spreadsheet(file));
-                Timeline timeline = new Timeline();
-                timeline.getKeyFrames().add(new KeyFrame(Duration.millis(1), event_t -> transition(event, "../fxml/mode.fxml")));
-                timeline.play();
-            } catch (IOException e) {
-                System.out.println("The file is not a proper .xls file.");
-                errorDialog(((Node)event.getSource()).getScene().getWindow(), "Il file deve essere un documento Excel (.xls) valido!");
-            }
+            Task<Spreadsheet> task = new Task<Spreadsheet>() {
+                @Override
+                protected Spreadsheet call() throws Exception {
+                    openButton.setDisable(true);
+                    Spreadsheet spreadsheet = new Spreadsheet(file);
+                    return spreadsheet;
+                }
+            };
+            task.setOnSucceeded(e -> {
+                this.setSpreadsheet(task.getValue());
+                transition(event, "../fxml/mode.fxml");
+            });
+            task.exceptionProperty().addListener((observable, oldValue, newValue) ->  {
+                if(newValue != null) {
+                    openButton.setDisable(false);
+                    errorDialog(((Node)event.getSource()).getScene().getWindow(), "Il file deve essere un documento Excel (.xls) valido!");
+                }
+            });
+            progressIndicator.visibleProperty().bind(task.runningProperty());
+            new Thread(task).start();
+
             success = true;
         }
         event.setDropCompleted(success);

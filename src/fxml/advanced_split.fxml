@@ -8,29 +8,29 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="200.0" prefWidth="500.0" styleClass="card" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="splitter.AdvancedSplitController">
+<BorderPane prefHeight="200.0" prefWidth="600.0" styleClass="card" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="splitter.AdvancedSplitController">
    <center>
-      <VBox fx:id="vBox" alignment="TOP_CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="vBox" alignment="CENTER_LEFT" spacing="10.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Label prefWidth="300.0" text="Scegli la colonna per determinare le cartelle" styleClass="control-label"/>
-                  <ChoiceBox onAction="#handleDirectoryBox" fx:id="directoryBox" prefWidth="150.0" />
+                  <Label prefWidth="380.0" styleClass="card-subtitle" text="Scegli la colonna per determinare le cartelle:" />
+                  <ChoiceBox fx:id="directoryBox" onAction="#handleDirectoryBox" prefWidth="150.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Label prefWidth="300.0" text="Scegli la colonna per determinare le sottocartelle" styleClass="control-label"/>
-                  <ChoiceBox onAction="#handleSubdirectoryBox" fx:id="subdirectoryBox" prefWidth="150.0" />
+                  <Label prefWidth="380.0" styleClass="card-subtitle" text="Scegli la colonna per determinare le sottocartelle:" />
+                  <ChoiceBox fx:id="subdirectoryBox" onAction="#handleSubdirectoryBox" prefWidth="150.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Label prefWidth="300.0" text="Scegli la colonna su cui effettuare lo split" styleClass="control-label"/>
-                  <ChoiceBox onAction="#handleColumnBox" fx:id="columnBox" prefWidth="150.0" />
+                  <Label prefWidth="380.0" styleClass="card-subtitle" text="Scegli la colonna su cui effettuare lo split:" />
+                  <ChoiceBox fx:id="columnBox" onAction="#handleColumnBox" prefWidth="150.0" />
                </children>
             </HBox>
          </children>

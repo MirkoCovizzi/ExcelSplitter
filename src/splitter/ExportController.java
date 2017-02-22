@@ -14,11 +14,10 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
-import javafx.scene.layout.VBox;
-import javafx.stage.*;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -29,8 +28,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ExportController extends ExcelController implements Initializable{
-    @FXML
-    private VBox vBox;
     @FXML
     private Button backButton;
     @FXML
@@ -47,6 +44,7 @@ public class ExportController extends ExcelController implements Initializable{
     private CheckBox checkBox;
     private IndexedString indexedString;
     private String dir;
+    private String finalPath;
     private IndexedString directory;
     private IndexedString subdirectory;
 
@@ -69,58 +67,59 @@ public class ExportController extends ExcelController implements Initializable{
         File f = new File(dir);
         Path p = f.toPath();
         if (Files.isWritable(p)) {
-            Label label = new Label("Attendere prego...");
-            vBox.getChildren().add(label);
             this.progressBar.setVisible(true);
             checkBox.setDisable(true);
             backButton.setDisable(true);
             exportButton.setDisable(true);
             cancelButton.setDisable(true);
             chooseDirectoryButton.setDisable(true);
-            List<Spreadsheet> spreadsheetList = null;
-            String path = dir;
-            if (checkBox.isSelected()){
-                path += File.separator + "Excel Splitter";
-            }
-            if (this.getPreviousFxml().equals("../fxml/advanced_split.fxml")){
-                spreadsheetList  = Spreadsheet.split(this.getSpreadsheet(), directory.getIndex(), subdirectory.getIndex(), indexedString.getIndex());
-            } else if (this.getPreviousFxml().equals("../fxml/split.fxml")) {
-                spreadsheetList = Spreadsheet.split(this.getSpreadsheet(), -1, -1, indexedString.getIndex());
-            }
-            List<Spreadsheet> finalSpreadsheetList = spreadsheetList;
-            String finalPath = path;
+
+            //prevent from closing during file export
+            Stage stage =(Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+            Platform.setImplicitExit(false);
+            stage.setOnCloseRequest(event -> event.consume());
+
+            final Spreadsheet spreadsheet = this.getSpreadsheet();
+            final String previousFxml = this.getPreviousFxml();
+
             Task<Void> task = new Task<Void>() {
 
                 @Override
                 protected Void call() throws Exception {
+                    List<Spreadsheet> spreadsheetList = null;
+                    String path = dir;
+                    if (checkBox.isSelected()){
+                        path += File.separator + "Excel Splitter";
+                    }
+                    if (previousFxml.equals("../fxml/advanced_split.fxml")){
+                        spreadsheetList  = Spreadsheet.split(spreadsheet, directory.getIndex(), subdirectory.getIndex(), indexedString.getIndex());
+                    } else if (previousFxml.equals("../fxml/split.fxml")) {
+                        spreadsheetList = Spreadsheet.split(spreadsheet, -1, -1, indexedString.getIndex());
+                    }
+
+                    finalPath = path;
                     File f;
-                    Stage stage =(Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
 
-                    //prevent from closing during file export
-                    Platform.setImplicitExit(false);
-                    stage.setOnCloseRequest(event -> event.consume());
-
-                    for (int i = 0; i < finalSpreadsheetList.size(); i++) {
-                        String dirString = finalSpreadsheetList.get(i).getDirectory();
+                    for (int i = 0; i < spreadsheetList.size(); i++) {
+                        String dirString = spreadsheetList.get(i).getDirectory();
                         dirString = formatName(dirString);
 
-                        String subdirString = finalSpreadsheetList.get(i).getSubdirectory();
+                        String subdirString = spreadsheetList.get(i).getSubdirectory();
                         subdirString = formatName(subdirString);
 
-                        f = new File(finalPath + File.separator + dirString + File.separator + subdirString);
+                        f = new File(path + File.separator + dirString + File.separator + subdirString);
                         if (!(f.exists() && f.isDirectory())){
                             f.mkdirs();
                         }
 
-                        String name = finalSpreadsheetList.get(i).getName();
+                        String name = spreadsheetList.get(i).getName();
                         name = formatName(name);
 
-                        String fullFilePath = finalPath + File.separator + dirString + File.separator + subdirString + File.separator + name;
+                        String fullFilePath = path + File.separator + dirString + File.separator + subdirString + File.separator + name;
 
-                        recursiveCheckedExport(actionEvent, finalSpreadsheetList.get(i), fullFilePath, 0);
+                        recursiveCheckedExport(actionEvent, spreadsheetList.get(i), fullFilePath, 0);
 
-                        updateProgress(i + 1, finalSpreadsheetList.size());
-                        //Thread.sleep(100);
+                        updateProgress(i + 1, spreadsheetList.size());
                     }
 
                     return null;
@@ -138,10 +137,12 @@ public class ExportController extends ExcelController implements Initializable{
                     st_new.setResizable(false);
                     st_new.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
                     st_new.setTitle("Excel Splitter");
-                    st_old.close();
                     Scene scene = new Scene(root);
                     scene.getStylesheets().add("css/theme.css");
                     st_new.setScene(scene);
+                    st_new.setX(st_old.getX());
+                    st_new.setY(st_old.getY());
+                    st_old.close();
                     st_new.show();
                 } catch (IOException ex) {
                     ex.printStackTrace();

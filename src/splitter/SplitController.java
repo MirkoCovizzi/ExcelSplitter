@@ -61,6 +61,8 @@ public class SplitController extends ExcelController implements Initializable{
             Scene scene = new Scene(root);
             scene.getStylesheets().add("css/theme.css");
             st_new.setScene(scene);
+            st_new.setX(st_old.getX());
+            st_new.setY(st_old.getY());
             st_old.close();
             st_new.show();
         } catch (IOException e) {

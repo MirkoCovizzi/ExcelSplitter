@@ -42,7 +42,6 @@ public class AdvancedSplitController extends ExcelController implements Initiali
         }
         resetChoiceBox(directoryBox);
         resetChoiceBox(subdirectoryBox);
-        subdirectoryBox.getItems().add(0, null);
         resetChoiceBox(columnBox);
     }
 
@@ -57,7 +56,7 @@ public class AdvancedSplitController extends ExcelController implements Initiali
                 controller.setIndexedString((IndexedString) columnBox.getValue());
                 controller.setDirectory((IndexedString) directoryBox.getValue());
                 if (subdirectoryBox.getValue() == null){
-                    controller.setSubdirectory(new IndexedString(-1, "none"));
+                    controller.setSubdirectory(new IndexedString(-1, ""));
                 } else {
                     controller.setSubdirectory((IndexedString) subdirectoryBox.getValue());
                 }
@@ -74,6 +73,8 @@ public class AdvancedSplitController extends ExcelController implements Initiali
             Scene scene = new Scene(root);
             scene.getStylesheets().add("css/theme.css");
             st_new.setScene(scene);
+            st_new.setX(st_old.getX());
+            st_new.setY(st_old.getY());
             st_old.close();
             st_new.show();
         } catch (IOException e) {
@@ -87,28 +88,32 @@ public class AdvancedSplitController extends ExcelController implements Initiali
         this.setPreviousFxml("../fxml/mode.fxml");
         this.setNextFxml("../fxml/export.fxml");
         directoryBox.valueProperty().addListener((ov, t, t1) -> {
+            if (t != null) {
+                resetChoiceBox(subdirectoryBox);
+                resetChoiceBox(columnBox);
+            }
             subdirectoryBox.getItems().remove(t1);
             columnBox.getItems().remove(t1);
             checkForwardButton();
-            if (t != null) {
-                subdirectoryBox.getItems().add(((IndexedString) t).getIndex(), t);
-                columnBox.getItems().add(((IndexedString) t).getIndex(), t);
-            }
         });
         subdirectoryBox.valueProperty().addListener((ov, t, t1) -> {
-            directoryBox.getItems().remove(t1);
+            if (t != null) {
+                resetChoiceBox(columnBox);
+            }
             columnBox.getItems().remove(t1);
             checkForwardButton();
-            if (t != null) {
-                directoryBox.getItems().add(((IndexedString)t).getIndex(), t);
-                columnBox.getItems().add(((IndexedString) t).getIndex(), t);
-            }
         });
     }
 
     private void resetChoiceBox(ChoiceBox comboBox){
+        for (int i = 0; i < comboBox.getItems().size(); i++){
+            comboBox.getItems().remove(i);
+        }
         for(int i = 0; i < indexedStringList.size(); i++){
             comboBox.getItems().add(i, indexedStringList.get(i));
+        }
+        if (comboBox.equals(subdirectoryBox)){
+            comboBox.getItems().add(0, null);
         }
     }
 
