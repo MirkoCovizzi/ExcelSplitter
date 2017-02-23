@@ -1,6 +1,8 @@
 package splitter;
 
-public class IndexedString {
+import java.util.Comparator;
+
+public class IndexedString{
     private int index;
     private String string;
 
@@ -28,5 +30,18 @@ public class IndexedString {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+}
+
+class IndexedStringComparator implements Comparator<IndexedString> {
+    @Override
+    public int compare(IndexedString a, IndexedString b) {
+        if (a.getIndex() < b.getIndex()){
+            return -1;
+        } else if (a.getIndex() > b.getIndex()){
+            return 1;
+        }
+        return 0;
     }
 }

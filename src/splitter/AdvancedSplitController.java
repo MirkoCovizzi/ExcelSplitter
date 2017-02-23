@@ -1,6 +1,5 @@
 package splitter;
 
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -55,11 +54,7 @@ public class AdvancedSplitController extends ExcelController implements Initiali
                 controller.setSpreadsheet(this.getSpreadsheet());
                 controller.setIndexedString((IndexedString) columnBox.getValue());
                 controller.setDirectory((IndexedString) directoryBox.getValue());
-                if (subdirectoryBox.getValue() == null){
-                    controller.setSubdirectory(new IndexedString(-1, ""));
-                } else {
-                    controller.setSubdirectory((IndexedString) subdirectoryBox.getValue());
-                }
+                controller.setSubdirectory((IndexedString) subdirectoryBox.getValue());
                 controller.setPreviousFxml("../fxml/advanced_split.fxml");
             } else if (fxml.equals("../fxml/mode.fxml")) {
                 ModeController controller = fxmlLoader.getController();
@@ -88,19 +83,31 @@ public class AdvancedSplitController extends ExcelController implements Initiali
         this.setPreviousFxml("../fxml/mode.fxml");
         this.setNextFxml("../fxml/export.fxml");
         directoryBox.valueProperty().addListener((ov, t, t1) -> {
-            if (t != null) {
-                resetChoiceBox(subdirectoryBox);
-                resetChoiceBox(columnBox);
+            if (t1.equals(subdirectoryBox.getValue())){
+                subdirectoryBox.getSelectionModel().selectFirst();
+            }
+            if (t1.equals(columnBox.getValue())){
+                columnBox.getSelectionModel().selectFirst();
             }
             subdirectoryBox.getItems().remove(t1);
             columnBox.getItems().remove(t1);
+            if (t != null){
+                subdirectoryBox.getItems().add(t);
+                subdirectoryBox.getItems().sort(new IndexedStringComparator());
+                columnBox.getItems().add(t);
+                columnBox.getItems().sort(new IndexedStringComparator());
+            }
             checkForwardButton();
         });
         subdirectoryBox.valueProperty().addListener((ov, t, t1) -> {
-            if (t != null) {
-                resetChoiceBox(columnBox);
+            if (t1.equals(columnBox.getValue())){
+                columnBox.getSelectionModel().selectFirst();
             }
             columnBox.getItems().remove(t1);
+            if (t != null){
+                columnBox.getItems().add(t);
+                columnBox.getItems().sort(new IndexedStringComparator());
+            }
             checkForwardButton();
         });
     }
@@ -112,20 +119,18 @@ public class AdvancedSplitController extends ExcelController implements Initiali
         for(int i = 0; i < indexedStringList.size(); i++){
             comboBox.getItems().add(i, indexedStringList.get(i));
         }
-        if (comboBox.equals(subdirectoryBox)){
-            comboBox.getItems().add(0, null);
-        }
+        comboBox.getItems().add(0, new IndexedString(-1, ""));
     }
 
-    public void handleDirectoryBox(ActionEvent actionEvent) {
+    public void handleDirectoryBox() {
         checkForwardButton();
     }
 
-    public void handleSubdirectoryBox(ActionEvent actionEvent) {
+    public void handleSubdirectoryBox() {
         checkForwardButton();
     }
 
-    public void handleColumnBox(ActionEvent actionEvent) {
+    public void handleColumnBox() {
         checkForwardButton();
     }
 
