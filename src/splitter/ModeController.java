@@ -18,17 +18,17 @@ import java.util.ResourceBundle;
 
 public class ModeController extends ExcelController implements Initializable{
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.setPreviousFxml("../fxml/load.fxml");
+    }
+
     public void handleSimpleButton(ActionEvent actionEvent) {
         transition(actionEvent, "../fxml/split.fxml");
     }
 
     public void handleAdvancedButton(ActionEvent actionEvent) {
         transition(actionEvent, "../fxml/advanced_split.fxml");
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        this.setPreviousFxml("../fxml/load.fxml");
     }
 
     public void handleHelpButton(ActionEvent actionEvent) {
@@ -49,8 +49,8 @@ public class ModeController extends ExcelController implements Initializable{
                     "Modalità Avanzata: Effettua uno split su più colonne, creando cartelle e sottocartelle.");
             dialog.show();
             Toolkit.getDefaultToolkit().beep();
-        } catch (IOException ioE) {
-            ioE.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

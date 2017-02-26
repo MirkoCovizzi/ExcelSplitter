@@ -24,6 +24,13 @@ public class SplitController extends ExcelController implements Initializable{
     private Button forwardButton;
 
     @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.forwardButton.setDisable(true);
+        this.setPreviousFxml("../fxml/mode.fxml");
+        this.setNextFxml("../fxml/export.fxml");
+    }
+
+    @Override
     public void setSpreadsheet(Spreadsheet spreadsheet) {
         super.setSpreadsheet(spreadsheet);
         IndexedString indexedString;
@@ -33,7 +40,6 @@ public class SplitController extends ExcelController implements Initializable{
             columnBox.getItems().add(indexedString);
         }
     }
-
 
     public void handleChoiceBox(ActionEvent actionEvent) {
         this.forwardButton.setDisable(false);
@@ -46,12 +52,12 @@ public class SplitController extends ExcelController implements Initializable{
             Parent root = fxmlLoader.load();
             if (fxml.equals("../fxml/export.fxml")) {
                 ExportController controller = fxmlLoader.getController();
-                controller.setSpreadsheet(this.getSpreadsheet());
+                controller.setSpreadsheet(super.getSpreadsheet());
                 controller.setIndexedString((IndexedString) columnBox.getValue());
                 controller.setPreviousFxml("../fxml/split.fxml");
             } else if (fxml.equals("../fxml/mode.fxml")) {
                 ModeController controller = fxmlLoader.getController();
-                controller.setSpreadsheet(this.getSpreadsheet());
+                controller.setSpreadsheet(super.getSpreadsheet());
             }
             Stage st_old =(Stage) ((Node)event.getSource()).getScene().getWindow();
             Stage st_new = new Stage();
@@ -68,12 +74,5 @@ public class SplitController extends ExcelController implements Initializable{
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        this.forwardButton.setDisable(true);
-        this.setPreviousFxml("../fxml/mode.fxml");
-        this.setNextFxml("../fxml/export.fxml");
     }
 }

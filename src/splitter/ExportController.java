@@ -48,14 +48,40 @@ public class ExportController extends ExcelController implements Initializable{
     private IndexedString directory;
     private IndexedString subdirectory;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.setNextFxml("../fxml/finish.fxml");
+        this.progressBar.setVisible(false);
+    }
+
+    @Override
+    public void setSpreadsheet(Spreadsheet spreadsheet) {
+        super.setSpreadsheet(spreadsheet);
+        this.dir = spreadsheet.getDirectory();
+        directoryLabel.setText(dir);
+    }
+
+    public void setIndexedString(IndexedString indexedString){
+        this.indexedString = indexedString;
+    }
+
+    public void setDirectory(IndexedString directory) {
+        this.directory = directory;
+    }
+
+    public void setSubdirectory(IndexedString subdirectory) {
+        this.subdirectory = subdirectory;
+    }
+
     public void handleChooseDirectory(ActionEvent actionEvent) {
         Node source = (Node) actionEvent.getSource();
         Window stage = source.getScene().getWindow();
+
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File selectedDirectory = directoryChooser.showDialog(stage);
 
         if(selectedDirectory == null){
-            directoryLabel.setText(this.getSpreadsheet().getDirectory());
+            directoryLabel.setText(super.getSpreadsheet().getDirectory());
         }else{
             directoryLabel.setText(selectedDirectory.getAbsolutePath());
             dir = selectedDirectory.getAbsolutePath();
@@ -73,11 +99,6 @@ public class ExportController extends ExcelController implements Initializable{
             exportButton.setDisable(true);
             cancelButton.setDisable(true);
             chooseDirectoryButton.setDisable(true);
-
-            //prevent from closing during file export
-            Stage stage =(Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-            Platform.setImplicitExit(false);
-            stage.setOnCloseRequest(event -> event.consume());
 
             final Spreadsheet spreadsheet = this.getSpreadsheet();
             final String previousFxml = this.getPreviousFxml();
@@ -137,6 +158,7 @@ public class ExportController extends ExcelController implements Initializable{
                     st_new.setResizable(false);
                     st_new.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
                     st_new.setTitle("Excel Splitter");
+                    st_new.setOnCloseRequest(event -> Platform.exit());
                     Scene scene = new Scene(root);
                     scene.getStylesheets().add("css/theme.css");
                     st_new.setScene(scene);
@@ -205,30 +227,5 @@ public class ExportController extends ExcelController implements Initializable{
         } else {
             System.out.println("File's status is unknown!");
         }
-    }
-
-    @Override
-    public void setSpreadsheet(Spreadsheet spreadsheet) {
-        super.setSpreadsheet(spreadsheet);
-        this.dir = spreadsheet.getDirectory();
-        directoryLabel.setText(dir);
-    }
-
-    public void setIndexedString(IndexedString indexedString){
-        this.indexedString = indexedString;
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        this.setNextFxml("../fxml/finish.fxml");
-        this.progressBar.setVisible(false);
-    }
-
-    public void setDirectory(IndexedString directory) {
-        this.directory = directory;
-    }
-
-    public void setSubdirectory(IndexedString subdirectory) {
-        this.subdirectory = subdirectory;
     }
 }

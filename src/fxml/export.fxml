@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.scene.media.*?>
-<?import javafx.scene.shape.*?>
 <?import javafx.geometry.*?>
-<?import javafx.scene.effect.*?>
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
+<?import javafx.scene.text.Font?>
 <BorderPane prefHeight="200.0" prefWidth="500.0" styleClass="card" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="splitter.ExportController">
    <center>
       <VBox fx:id="vBox" alignment="TOP_CENTER" spacing="10.0" BorderPane.alignment="CENTER">
@@ -19,7 +14,7 @@
             <Label styleClass="card-title" text="Seleziona la cartella in cui esportare i file" />
             <Label fx:id="directoryLabel" styleClass="control-label" text="Label" />
             <Button fx:id="chooseDirectoryButton" mnemonicParsing="false" onAction="#handleChooseDirectory" styleClass="button-raised" text="Scegli cartella" />
-            <CheckBox fx:id="checkBox" mnemonicParsing="false" selected="true" text="Crea un'apposita cartella di output">
+            <CheckBox fx:id="checkBox" mnemonicParsing="false" selected="true" text="Crea un'apposita cartella di output chiamata &quot;Excel Splitter&quot;">
                <tooltip>
                   <Tooltip prefWidth="200.0" styleClass="tooltip" text="Se selezionata, verrà creata una cartella chiamata &quot;Excel Splitter&quot; all'interno della cartella selezionata. Questa nuova cartella conterrà i file esportati." wrapText="true">
                      <font>

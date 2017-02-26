@@ -22,15 +22,30 @@ public class ExcelController {
     private String previousFxml;
     private String nextFxml;
 
-    public Spreadsheet getSpreadsheet() {
-        return spreadsheet;
-    }
-
     public void setSpreadsheet(Spreadsheet spreadsheet) {
         this.spreadsheet = spreadsheet;
     }
 
-    //Method for transitioning from a window to another, sending a spreadsheet file
+    public Spreadsheet getSpreadsheet() {
+        return spreadsheet;
+    }
+
+    public String getPreviousFxml() {
+        return previousFxml;
+    }
+
+    public void setPreviousFxml(String previousFxml) {
+        this.previousFxml = previousFxml;
+    }
+
+    public String getNextFxml() {
+        return nextFxml;
+    }
+
+    public void setNextFxml(String nextFxml) {
+        this.nextFxml = nextFxml;
+    }
+
     public void transition(Event event, String fxml){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
         try {
@@ -52,22 +67,6 @@ public class ExcelController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public String getPreviousFxml() {
-        return previousFxml;
-    }
-
-    public void setPreviousFxml(String previousFxml) {
-        this.previousFxml = previousFxml;
-    }
-
-    public String getNextFxml() {
-        return nextFxml;
-    }
-
-    public void setNextFxml(String nextFxml) {
-        this.nextFxml = nextFxml;
     }
 
     public void handleBackButton(ActionEvent actionEvent) {
@@ -101,8 +100,8 @@ public class ExcelController {
             button.setOnAction(event -> dialog.close());
             dialog.show();
             Toolkit.getDefaultToolkit().beep();
-        } catch (IOException ioE) {
-            ioE.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

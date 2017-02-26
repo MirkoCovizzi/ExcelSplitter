@@ -8,7 +8,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class FinishController extends ExcelController{
+public class FinishController {
     @FXML
     private CheckBox checkBox;
     private String directory;
