@@ -166,8 +166,8 @@ public class ExportController extends ExcelController implements Initializable{
                     st_new.setY(st_old.getY());
                     st_old.close();
                     st_new.show();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+                } catch (IOException exception) {
+                    exception.printStackTrace();
                 }
             });
             progressBar.progressProperty().bind(task.progressProperty());

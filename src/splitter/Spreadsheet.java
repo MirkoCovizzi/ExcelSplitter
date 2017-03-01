@@ -110,7 +110,7 @@ public class Spreadsheet {
 
     public static List<Spreadsheet> split(Spreadsheet s, int directoryCol, int subdirectoryCol, int column){
         List<Spreadsheet> spreadsheets = new ArrayList<>();
-        List<Triple> columnList = new ArrayList<>();
+        List<Triple> tripleList = new ArrayList<>();
         int size = s.getSheet().getPhysicalNumberOfRows();
 
         for (int i = 1; i < size; i++){
@@ -124,8 +124,8 @@ public class Spreadsheet {
                 }
             }
             Triple t = new Triple(dirValue, subdirValue, cellValue);
-            if (!columnList.contains(t)){
-                columnList.add(t);
+            if (!tripleList.contains(t)){
+                tripleList.add(t);
                 if (directoryCol >= 0 && subdirectoryCol >= 0){
                     spreadsheets.add(new Spreadsheet(s.getName() + "_" + cellValue, s.getCellValue(i, directoryCol), s.getCellValue(i, subdirectoryCol)));
                 } else if (directoryCol >= 0 && subdirectoryCol < 0){
@@ -136,19 +136,19 @@ public class Spreadsheet {
             }
         }
 
-        for(int i = 0; i < columnList.size(); i++){
+        for(int i = 0; i < tripleList.size(); i++){
             Spreadsheet.addRow(s, spreadsheets.get(i), 0);
             for(int j = 0; j < size; j++){
                 if (directoryCol >= 0 && subdirectoryCol >= 0) {
-                    if(s.getCellValue(j, directoryCol).equals(columnList.get(i).first) && s.getCellValue(j, subdirectoryCol).equals(columnList.get(i).second) && s.getCellValue(j, column).equals(columnList.get(i).third)){
+                    if(s.getCellValue(j, directoryCol).equals(tripleList.get(i).first) && s.getCellValue(j, subdirectoryCol).equals(tripleList.get(i).second) && s.getCellValue(j, column).equals(tripleList.get(i).third)){
                         Spreadsheet.addRow(s, spreadsheets.get(i), j);
                     }
                 } else if (directoryCol >= 0 && subdirectoryCol < 0){
-                    if(s.getCellValue(j, directoryCol).equals(columnList.get(i).first) && s.getCellValue(j, column).equals(columnList.get(i).third)){
+                    if(s.getCellValue(j, directoryCol).equals(tripleList.get(i).first) && s.getCellValue(j, column).equals(tripleList.get(i).third)){
                         Spreadsheet.addRow(s, spreadsheets.get(i), j);
                     }
                 } else if (directoryCol < 0 && subdirectoryCol < 0){
-                    if(s.getCellValue(j, column).equals(columnList.get(i).third)){
+                    if(s.getCellValue(j, column).equals(tripleList.get(i).third)){
                         Spreadsheet.addRow(s, spreadsheets.get(i), j);
                     }
                 }

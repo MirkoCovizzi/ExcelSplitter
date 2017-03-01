@@ -41,7 +41,7 @@ public class SplitController extends ExcelController implements Initializable{
         }
     }
 
-    public void handleChoiceBox(ActionEvent actionEvent) {
+    public void handleChoiceBox() {
         this.forwardButton.setDisable(false);
     }
 

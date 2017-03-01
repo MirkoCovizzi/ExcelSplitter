@@ -68,13 +68,36 @@ public class AdvancedSplitController extends ExcelController implements Initiali
             checkForwardButton();
         });
         subdirectoryBox.valueProperty().addListener((ov, oldValue, newValue) -> {
+            if (newValue.equals(directoryBox.getValue())){
+                directoryBox.getSelectionModel().selectFirst();
+            }
             if (newValue.equals(columnBox.getValue())){
                 columnBox.getSelectionModel().selectFirst();
             }
+            directoryBox.getItems().remove(newValue);
             columnBox.getItems().remove(newValue);
             if (!((IndexedString)oldValue).getString().equals("")){
+                directoryBox.getItems().add(oldValue);
+                directoryBox.getItems().sort(new IndexedStringComparator());
                 columnBox.getItems().add(oldValue);
                 columnBox.getItems().sort(new IndexedStringComparator());
+            }
+            checkForwardButton();
+        });
+        columnBox.valueProperty().addListener((ov, oldValue, newValue) -> {
+            if (newValue.equals(directoryBox.getValue())){
+                directoryBox.getSelectionModel().selectFirst();
+            }
+            if (newValue.equals(subdirectoryBox.getValue())){
+                subdirectoryBox.getSelectionModel().selectFirst();
+            }
+            directoryBox.getItems().remove(newValue);
+            subdirectoryBox.getItems().remove(newValue);
+            if (!((IndexedString)oldValue).getString().equals("")){
+                directoryBox.getItems().add(oldValue);
+                directoryBox.getItems().sort(new IndexedStringComparator());
+                subdirectoryBox.getItems().add(oldValue);
+                subdirectoryBox.getItems().sort(new IndexedStringComparator());
             }
             checkForwardButton();
         });
