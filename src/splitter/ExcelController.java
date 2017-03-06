@@ -55,10 +55,11 @@ public class ExcelController {
             Stage st_old =(Stage) ((Node)event.getSource()).getScene().getWindow();
             Stage st_new = new Stage();
             st_new.setResizable(false);
-            st_new.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
+            st_new.getIcons().add(new Image(Main.class.getResourceAsStream("/res/excel-splitter-small.png")));
             st_new.setTitle("Excel Splitter");
+            st_new.setOnCloseRequest(e -> Platform.exit());
             Scene scene = new Scene(root);
-            scene.getStylesheets().add("css/theme.css");
+            scene.getStylesheets().add("/css/theme.css");
             st_new.setScene(scene);
             st_new.setX(st_old.getX());
             st_new.setY(st_old.getY());
@@ -84,15 +85,15 @@ public class ExcelController {
     public void errorDialog(Window initOwner, String string){
         final Stage dialog = new Stage();
         dialog.setTitle("Attenzione!");
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/dialog.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/dialog.fxml"));
         try {
             Parent root = fxmlLoader.load();
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.initOwner(initOwner);
-            dialog.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
+            dialog.getIcons().add(new Image(Main.class.getResourceAsStream("/res/excel-splitter-small.png")));
             dialog.setResizable(false);
             Scene dialogScene = new Scene(root);
-            dialogScene.getStylesheets().add("css/theme.css");
+            dialogScene.getStylesheets().add("/css/theme.css");
             dialog.setScene(dialogScene);
             Label label = (Label)root.lookup("#label");
             label.setText(string);

@@ -1,5 +1,6 @@
 package splitter;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -26,8 +27,8 @@ public class SplitController extends ExcelController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.forwardButton.setDisable(true);
-        this.setPreviousFxml("../fxml/mode.fxml");
-        this.setNextFxml("../fxml/export.fxml");
+        this.setPreviousFxml("/fxml/mode.fxml");
+        this.setNextFxml("/fxml/export.fxml");
     }
 
     @Override
@@ -50,22 +51,23 @@ public class SplitController extends ExcelController implements Initializable{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
         try {
             Parent root = fxmlLoader.load();
-            if (fxml.equals("../fxml/export.fxml")) {
+            if (fxml.equals("/fxml/export.fxml")) {
                 ExportController controller = fxmlLoader.getController();
                 controller.setSpreadsheet(super.getSpreadsheet());
                 controller.setIndexedString((IndexedString) columnBox.getValue());
-                controller.setPreviousFxml("../fxml/split.fxml");
-            } else if (fxml.equals("../fxml/mode.fxml")) {
+                controller.setPreviousFxml("/fxml/split.fxml");
+            } else if (fxml.equals("/fxml/mode.fxml")) {
                 ModeController controller = fxmlLoader.getController();
                 controller.setSpreadsheet(super.getSpreadsheet());
             }
             Stage st_old =(Stage) ((Node)event.getSource()).getScene().getWindow();
             Stage st_new = new Stage();
             st_new.setResizable(false);
-            st_new.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
+            st_new.getIcons().add(new Image(Main.class.getResourceAsStream("/res/excel-splitter-small.png")));
             st_new.setTitle("Excel Splitter");
+            st_new.setOnCloseRequest(e -> Platform.exit());
             Scene scene = new Scene(root);
-            scene.getStylesheets().add("css/theme.css");
+            scene.getStylesheets().add("/css/theme.css");
             st_new.setScene(scene);
             st_new.setX(st_old.getX());
             st_new.setY(st_old.getY());

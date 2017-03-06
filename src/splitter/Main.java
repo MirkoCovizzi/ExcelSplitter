@@ -11,12 +11,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("../fxml/load.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/load.fxml"));
         primaryStage.setResizable(false);
-        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("../res/excel-splitter-small.png")));
+        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/res/excel-splitter-small.png")));
         primaryStage.setTitle("Excel Splitter");
         Scene scene = new Scene(root);
-        scene.getStylesheets().add("css/theme.css");
+        scene.getStylesheets().add("/css/theme.css");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

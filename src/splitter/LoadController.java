@@ -73,10 +73,11 @@ public class LoadController extends ExcelController {
         };
         task.setOnSucceeded(e -> {
             this.setSpreadsheet(task.getValue());
-            transition(event, "../fxml/mode.fxml");
+            transition(event, "/fxml/mode.fxml");
         });
         task.exceptionProperty().addListener((observable, oldValue, newValue) ->  {
             if(newValue != null) {
+                newValue.printStackTrace();
                 openButton.setDisable(false);
                 errorDialog(((Node)event.getSource()).getScene().getWindow(), "Il file deve essere un documento Excel (.xls) valido!");
             }
