@@ -145,7 +145,7 @@ public class ExportController extends ExcelController implements Initializable{
 
                         String fullFilePath = path + File.separator + dirString + File.separator + subdirString + File.separator + name;
 
-                        recursiveCheckedExport(actionEvent, spreadsheetList.get(i), fullFilePath, 0);
+                        recursiveCheckExport(actionEvent, spreadsheetList.get(i), fullFilePath, 0);
 
                         updateProgress(i + 1, spreadsheetList.size());
                     }
@@ -203,7 +203,7 @@ public class ExportController extends ExcelController implements Initializable{
         return name;
     }
 
-    private void recursiveCheckedExport(ActionEvent actionEvent, Spreadsheet s, String path, int count){
+    private void recursiveCheckExport(ActionEvent actionEvent, Spreadsheet s, String path, int count){
         Path p;
         if (count == 0) {
             p = Paths.get(path + ".xls");
@@ -214,10 +214,11 @@ public class ExportController extends ExcelController implements Initializable{
         boolean notExists = Files.notExists(p);
 
         if (exists) {
-            recursiveCheckedExport(actionEvent, s, path, ++count);
+            recursiveCheckExport(actionEvent, s, path, ++count);
         } else if (notExists) {
             if (count == 0){
                 try {
+                    s.autoSizeColumns();
                     s.export(path);
                 } catch (IOException e) {
                     errorDialog(((Node)actionEvent.getSource()).getScene().getWindow(), "Errore: impossibile esportare il file " + s.getName() + ".xls");
@@ -225,6 +226,7 @@ public class ExportController extends ExcelController implements Initializable{
                 }
             } else {
                 try {
+                    s.autoSizeColumns();
                     s.export(path + count);
                 } catch (IOException e) {
                     errorDialog(((Node)actionEvent.getSource()).getScene().getWindow(), "Errore: impossibile esportare il file " + s.getName() + ".xls");

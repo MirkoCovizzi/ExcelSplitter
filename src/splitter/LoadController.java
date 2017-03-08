@@ -78,7 +78,7 @@ public class LoadController extends ExcelController {
         task.exceptionProperty().addListener((observable, oldValue, newValue) ->  {
             if(newValue != null) {
                 openButton.setDisable(false);
-                errorDialog(((Node)event.getSource()).getScene().getWindow(), "Il file deve essere un documento Excel (.xls) valido!");
+                errorDialog(((Node)event.getSource()).getScene().getWindow(), "Il file deve essere un documento Excel (.xls) valido e ben formato!");
             }
         });
         progressIndicator.visibleProperty().bind(task.runningProperty());

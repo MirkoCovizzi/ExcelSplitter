@@ -7,10 +7,13 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.NPOIFSFileSystem;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Row;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 //This class is the core of the application: it loads, splits and exports .xls files.
@@ -53,6 +56,11 @@ public class Spreadsheet {
         fs.close();
         f.close();
 
+        if(!isFormatCorrect()){
+            IOException e = new IOException();
+            throw e;
+        }
+
         this.name = FilenameUtils.removeExtension(file.getName());
         this.directory = file.getParent();
 
@@ -61,6 +69,14 @@ public class Spreadsheet {
         for (int i = 0; i < sheet.getRow(0).getPhysicalNumberOfCells(); i++){
             this.columns.add(i, getCellValue(0, i));
         }
+    }
+
+    //Simple check for correct document format
+    private boolean isFormatCorrect() {
+        if (this.sheet.getRow(0) == null) {
+            return false;
+        }
+        return true;
     }
 
     public HSSFSheet getSheet(){
@@ -156,6 +172,18 @@ public class Spreadsheet {
         }
 
         return spreadsheets;
+    }
+
+    public void autoSizeColumns() {
+        if (this.sheet.getPhysicalNumberOfRows() > 0) {
+            Row row = sheet.getRow(0);
+            Iterator<Cell> cellIterator = row.cellIterator();
+            while (cellIterator.hasNext()) {
+                Cell cell = cellIterator.next();
+                int columnIndex = cell.getColumnIndex();
+                sheet.autoSizeColumn(columnIndex);
+            }
+        }
     }
 
     public void export(String filename) throws IOException{
