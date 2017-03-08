@@ -1,5 +1,5 @@
 .idea/
-/jar
+jar/
 out/production/
 src/META-INF/
 ExcelSplitter.iml
