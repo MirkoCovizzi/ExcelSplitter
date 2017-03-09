@@ -120,9 +120,9 @@ public class ExportController extends ExcelController implements Initializable{
                         path += File.separator + "Excel Splitter";
                     }
                     if (previousFxml.equals("/fxml/advanced_split.fxml")){
-                        spreadsheetList  = Spreadsheet.split(spreadsheet, directory.getIndex(), subdirectory.getIndex(), indexedString.getIndex());
+                        spreadsheetList  = spreadsheet.split(directory.getIndex(), subdirectory.getIndex(), indexedString.getIndex());
                     } else if (previousFxml.equals("/fxml/split.fxml")) {
-                        spreadsheetList = Spreadsheet.split(spreadsheet, -1, -1, indexedString.getIndex());
+                        spreadsheetList = spreadsheet.split(-1, -1, indexedString.getIndex());
                     }
 
                     finalPath = path;

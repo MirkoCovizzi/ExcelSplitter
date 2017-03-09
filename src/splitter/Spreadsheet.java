@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-//This class is the core of the application: it loads, splits and exports .xls files.
 public class Spreadsheet {
     private HSSFSheet sheet;
     private String name;
@@ -71,7 +70,6 @@ public class Spreadsheet {
         }
     }
 
-    //Simple check for correct document format
     private boolean isFormatCorrect() {
         if (this.sheet.getRow(0) == null) {
             return false;
@@ -104,14 +102,14 @@ public class Spreadsheet {
         return df.formatCellValue(this.sheet.getRow(row).getCell(col));
     }
 
-    public static void copyRow(Spreadsheet s1, Spreadsheet s2, int row1, int row2){
-        int size = s1.getSheet().getRow(0).getPhysicalNumberOfCells();
+    public void copyRow(Spreadsheet s2, int row1, int row2){
+        int size = this.sheet.getRow(0).getPhysicalNumberOfCells();
         HSSFRow row = s2.getSheet().createRow(row2);
 
         String cellValue;
         for(int i = 0; i < size; i++){
             HSSFCell cell = row.createCell(i);
-            cellValue = s1.getCellValue(row1, i);
+            cellValue = this.getCellValue(row1, i);
             if (StringUtils.isNumeric(cellValue)){
                 cell.setCellValue(Double.parseDouble(cellValue));
             } else {
@@ -120,52 +118,52 @@ public class Spreadsheet {
         }
     }
 
-    public static void addRow(Spreadsheet s1, Spreadsheet s2, int row1){
-        copyRow(s1, s2, row1, s2.getSheet().getPhysicalNumberOfRows());
+    public void addRow(Spreadsheet s2, int row1){
+        copyRow(s2, row1, s2.getSheet().getPhysicalNumberOfRows());
     }
 
-    public static List<Spreadsheet> split(Spreadsheet s, int directoryCol, int subdirectoryCol, int column){
+    public List<Spreadsheet> split(int directoryCol, int subdirectoryCol, int column){
         List<Spreadsheet> spreadsheets = new ArrayList<>();
         List<Triple> tripleList = new ArrayList<>();
-        int size = s.getSheet().getPhysicalNumberOfRows();
+        int size = this.sheet.getPhysicalNumberOfRows();
 
         for (int i = 1; i < size; i++){
-            String cellValue = s.getCellValue(i, column);
+            String cellValue = this.getCellValue(i, column);
             String dirValue = "";
             String subdirValue = "";
             if (directoryCol >= 0){
-                dirValue = s.getCellValue(i, directoryCol);
+                dirValue = this.getCellValue(i, directoryCol);
                 if (subdirectoryCol >= 0){
-                    subdirValue = s.getCellValue(i, subdirectoryCol);
+                    subdirValue = this.getCellValue(i, subdirectoryCol);
                 }
             }
             Triple t = new Triple(dirValue, subdirValue, cellValue);
             if (!tripleList.contains(t)){
                 tripleList.add(t);
                 if (directoryCol >= 0 && subdirectoryCol >= 0){
-                    spreadsheets.add(new Spreadsheet(s.getName() + "_" + cellValue, s.getCellValue(i, directoryCol), s.getCellValue(i, subdirectoryCol)));
+                    spreadsheets.add(new Spreadsheet(this.getName() + "_" + cellValue, this.getCellValue(i, directoryCol), this.getCellValue(i, subdirectoryCol)));
                 } else if (directoryCol >= 0 && subdirectoryCol < 0){
-                    spreadsheets.add(new Spreadsheet(s.getName() + "_" + cellValue, s.getCellValue(i, directoryCol)));
+                    spreadsheets.add(new Spreadsheet(this.getName() + "_" + cellValue, this.getCellValue(i, directoryCol)));
                 } else if (directoryCol < 0 && subdirectoryCol < 0){
-                    spreadsheets.add(new Spreadsheet(s.getName() + "_" + cellValue));
+                    spreadsheets.add(new Spreadsheet(this.getName() + "_" + cellValue));
                 }
             }
         }
 
         for(int i = 0; i < tripleList.size(); i++){
-            Spreadsheet.addRow(s, spreadsheets.get(i), 0);
+            this.addRow(spreadsheets.get(i), 0);
             for(int j = 0; j < size; j++){
                 if (directoryCol >= 0 && subdirectoryCol >= 0) {
-                    if(s.getCellValue(j, directoryCol).equals(tripleList.get(i).first) && s.getCellValue(j, subdirectoryCol).equals(tripleList.get(i).second) && s.getCellValue(j, column).equals(tripleList.get(i).third)){
-                        Spreadsheet.addRow(s, spreadsheets.get(i), j);
+                    if(this.getCellValue(j, directoryCol).equals(tripleList.get(i).first) && this.getCellValue(j, subdirectoryCol).equals(tripleList.get(i).second) && this.getCellValue(j, column).equals(tripleList.get(i).third)){
+                        this.addRow(spreadsheets.get(i), j);
                     }
                 } else if (directoryCol >= 0 && subdirectoryCol < 0){
-                    if(s.getCellValue(j, directoryCol).equals(tripleList.get(i).first) && s.getCellValue(j, column).equals(tripleList.get(i).third)){
-                        Spreadsheet.addRow(s, spreadsheets.get(i), j);
+                    if(this.getCellValue(j, directoryCol).equals(tripleList.get(i).first) && this.getCellValue(j, column).equals(tripleList.get(i).third)){
+                        this.addRow(spreadsheets.get(i), j);
                     }
                 } else if (directoryCol < 0 && subdirectoryCol < 0){
-                    if(s.getCellValue(j, column).equals(tripleList.get(i).third)){
-                        Spreadsheet.addRow(s, spreadsheets.get(i), j);
+                    if(this.getCellValue(j, column).equals(tripleList.get(i).third)){
+                        this.addRow(spreadsheets.get(i), j);
                     }
                 }
             }
