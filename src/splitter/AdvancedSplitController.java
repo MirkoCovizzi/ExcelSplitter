@@ -104,15 +104,15 @@ public class AdvancedSplitController extends ExcelController implements Initiali
         });
     }
 
-    private void resetChoiceBox(ChoiceBox comboBox){
-        for (int i = 0; i < comboBox.getItems().size(); i++){
-            comboBox.getItems().remove(i);
+    private void resetChoiceBox(ChoiceBox choiceBox){
+        for (int i = 0; i < choiceBox.getItems().size(); i++){
+            choiceBox.getItems().remove(i);
         }
         for(int i = 0; i < indexedStringList.size(); i++){
-            comboBox.getItems().add(i, indexedStringList.get(i));
+            choiceBox.getItems().add(i, indexedStringList.get(i));
         }
-        comboBox.getItems().add(0, new IndexedString(-1, ""));
-        comboBox.getSelectionModel().selectFirst();
+        choiceBox.getItems().add(0, new IndexedString(-1, ""));
+        choiceBox.getSelectionModel().selectFirst();
     }
 
     public void handleDirectoryBox() {
