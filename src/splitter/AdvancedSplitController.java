@@ -140,7 +140,7 @@ public class AdvancedSplitController extends ExcelController implements Initiali
             if (fxml.equals("/fxml/export.fxml")) {
                 ExportController controller = fxmlLoader.getController();
                 controller.setSpreadsheet(super.getSpreadsheet());
-                controller.setIndexedString((IndexedString) columnBox.getValue());
+                controller.setColumn((IndexedString) columnBox.getValue());
                 controller.setDirectory((IndexedString) directoryBox.getValue());
                 controller.setSubdirectory((IndexedString) subdirectoryBox.getValue());
                 controller.setPreviousFxml("/fxml/advanced_split.fxml");

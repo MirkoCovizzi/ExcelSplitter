@@ -43,7 +43,7 @@ public class ExportController extends ExcelController implements Initializable{
     private ProgressBar progressBar;
     @FXML
     private CheckBox checkBox;
-    private IndexedString indexedString;
+    private IndexedString column;
     private String dir;
     private String finalPath;
     private IndexedString directory;
@@ -62,8 +62,8 @@ public class ExportController extends ExcelController implements Initializable{
         directoryLabel.setText(dir);
     }
 
-    public void setIndexedString(IndexedString indexedString){
-        this.indexedString = indexedString;
+    public void setColumn(IndexedString column){
+        this.column = column;
     }
 
     public void setDirectory(IndexedString directory) {
@@ -120,9 +120,9 @@ public class ExportController extends ExcelController implements Initializable{
                         path += File.separator + "Excel Splitter";
                     }
                     if (previousFxml.equals("/fxml/advanced_split.fxml")){
-                        spreadsheetList  = spreadsheet.split(directory.getIndex(), subdirectory.getIndex(), indexedString.getIndex());
+                        spreadsheetList  = spreadsheet.split(directory.getIndex(), subdirectory.getIndex(), column.getIndex());
                     } else if (previousFxml.equals("/fxml/split.fxml")) {
-                        spreadsheetList = spreadsheet.split(-1, -1, indexedString.getIndex());
+                        spreadsheetList = spreadsheet.split(-1, -1, column.getIndex());
                     }
 
                     finalPath = path;

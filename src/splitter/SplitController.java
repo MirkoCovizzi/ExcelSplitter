@@ -54,7 +54,7 @@ public class SplitController extends ExcelController implements Initializable{
             if (fxml.equals("/fxml/export.fxml")) {
                 ExportController controller = fxmlLoader.getController();
                 controller.setSpreadsheet(super.getSpreadsheet());
-                controller.setIndexedString((IndexedString) columnBox.getValue());
+                controller.setColumn((IndexedString) columnBox.getValue());
                 controller.setPreviousFxml("/fxml/split.fxml");
             } else if (fxml.equals("/fxml/mode.fxml")) {
                 ModeController controller = fxmlLoader.getController();
