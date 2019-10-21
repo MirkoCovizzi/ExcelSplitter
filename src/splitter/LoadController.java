@@ -29,7 +29,7 @@ public class LoadController extends ExcelController {
         Window stage = source.getScene().getWindow();
 
         FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("File Excel (*.xls)", "*.xls");
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("File Excel (*.xls, *.xlsx)", "*.xls", "*.xlsx");
         fileChooser.getExtensionFilters().add(extensionFilter);
 
         File file = fileChooser.showOpenDialog(stage);
@@ -78,7 +78,8 @@ public class LoadController extends ExcelController {
         task.exceptionProperty().addListener((observable, oldValue, newValue) ->  {
             if(newValue != null) {
                 openButton.setDisable(false);
-                errorDialog(((Node)event.getSource()).getScene().getWindow(), "Il file deve essere un documento Excel (.xls) valido e ben formato!");
+                errorDialog(((Node)event.getSource()).getScene().getWindow(), "Il file deve essere un documento Excel (.xls oppure .xlsx) valido e ben formato!");
+                System.out.println(task.exceptionProperty().toString());
             }
         });
         progressIndicator.visibleProperty().bind(task.runningProperty());

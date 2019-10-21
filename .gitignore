@@ -2,3 +2,8 @@
 out/production/
 src/META-INF/
 ExcelSplitter.iml
+commons-collections4-4.4/
+commons-io-2.6/
+commons-lang3-3.9/
+poi-3.17/
+xmlbeans-3.1.0/

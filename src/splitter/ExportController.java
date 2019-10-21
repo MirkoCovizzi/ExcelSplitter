@@ -108,6 +108,7 @@ public class ExportController extends ExcelController implements Initializable{
             });
 
             final Spreadsheet spreadsheet = this.getSpreadsheet();
+            final boolean xFlag = spreadsheet.getXFlag();
             final String previousFxml = this.getPreviousFxml();
 
             Task<Void> task = new Task<Void>() {
@@ -145,9 +146,11 @@ public class ExportController extends ExcelController implements Initializable{
 
                         String fullFilePath = path + File.separator + dirString + File.separator + subdirString + File.separator + name;
 
-                        recursiveCheckExport(actionEvent, spreadsheetList.get(i), fullFilePath, 0);
+                        recursiveCheckExport(xFlag, actionEvent, spreadsheetList.get(i), fullFilePath, 0);
 
                         updateProgress(i + 1, spreadsheetList.size());
+
+                        System.out.println(dirString + ' ' + fullFilePath);
                     }
 
                     return null;
@@ -203,38 +206,73 @@ public class ExportController extends ExcelController implements Initializable{
         return name;
     }
 
-    private void recursiveCheckExport(ActionEvent actionEvent, Spreadsheet s, String path, int count){
-        Path p;
-        if (count == 0) {
-            p = Paths.get(path + ".xls");
-        } else {
-            p = Paths.get(path + count + ".xls");
-        }
-        boolean exists = Files.exists(p);
-        boolean notExists = Files.notExists(p);
+    private void recursiveCheckExport(boolean xFlag, ActionEvent actionEvent, Spreadsheet s, String path, int count){
+        if (xFlag) {
+            Path p;
+            if (count == 0) {
+                p = Paths.get(path + ".xlsx");
+            } else {
+                p = Paths.get(path + count + ".xlsx");
+            }
+            boolean exists = Files.exists(p);
+            boolean notExists = Files.notExists(p);
 
-        if (exists) {
-            recursiveCheckExport(actionEvent, s, path, ++count);
-        } else if (notExists) {
-            if (count == 0){
-                try {
-                    s.autoSizeColumns();
-                    s.export(path);
-                } catch (IOException e) {
-                    errorDialog(((Node)actionEvent.getSource()).getScene().getWindow(), "Errore: impossibile esportare il file " + s.getName() + ".xls");
-                    e.printStackTrace();
+            if (exists) {
+                recursiveCheckExport(xFlag, actionEvent, s, path, ++count);
+            } else if (notExists) {
+                if (count == 0) {
+                    try {
+                        s.autoSizeColumns();
+                        s.export(path);
+                    } catch (IOException e) {
+                        errorDialog(((Node) actionEvent.getSource()).getScene().getWindow(), "Errore: impossibile esportare il file " + s.getName() + ".xlsx");
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        s.autoSizeColumns();
+                        s.export(path + count);
+                    } catch (IOException e) {
+                        errorDialog(((Node) actionEvent.getSource()).getScene().getWindow(), "Errore: impossibile esportare il file " + s.getName() + ".xlsx");
+                        e.printStackTrace();
+                    }
                 }
             } else {
-                try {
-                    s.autoSizeColumns();
-                    s.export(path + count);
-                } catch (IOException e) {
-                    errorDialog(((Node)actionEvent.getSource()).getScene().getWindow(), "Errore: impossibile esportare il file " + s.getName() + ".xls");
-                    e.printStackTrace();
-                }
+                System.out.println("File's status is unknown!");
             }
         } else {
-            System.out.println("File's status is unknown!");
+            Path p;
+            if (count == 0) {
+                p = Paths.get(path + ".xls");
+            } else {
+                p = Paths.get(path + count + ".xls");
+            }
+            boolean exists = Files.exists(p);
+            boolean notExists = Files.notExists(p);
+
+            if (exists) {
+                recursiveCheckExport(xFlag, actionEvent, s, path, ++count);
+            } else if (notExists) {
+                if (count == 0) {
+                    try {
+                        s.autoSizeColumns();
+                        s.export(path);
+                    } catch (IOException e) {
+                        errorDialog(((Node) actionEvent.getSource()).getScene().getWindow(), "Errore: impossibile esportare il file " + s.getName() + ".xls");
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        s.autoSizeColumns();
+                        s.export(path + count);
+                    } catch (IOException e) {
+                        errorDialog(((Node) actionEvent.getSource()).getScene().getWindow(), "Errore: impossibile esportare il file " + s.getName() + ".xls");
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+                System.out.println("File's status is unknown!");
+            }
         }
     }
 }
