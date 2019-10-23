@@ -79,6 +79,7 @@ public class LoadController extends ExcelController {
             if(newValue != null) {
                 openButton.setDisable(false);
                 errorDialog(((Node)event.getSource()).getScene().getWindow(), "Il file deve essere un documento Excel (.xls oppure .xlsx) valido e ben formato!");
+                errorDialog(((Node)event.getSource()).getScene().getWindow(), task.exceptionProperty().toString());
                 System.out.println(task.exceptionProperty().toString());
             }
         });
